@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    - http:
+        paths:
+
+        - path: /login
+          pathType: Prefix
+          backend:
+            service:
+              name: auth-service
+              port:
+                number: 80
+
+        - path: /register
+          pathType: Prefix
+          backend:
+            service:
+              name: fanout-service
+              port:
+                number: 80
+
+        - path: /changePassword
+          pathType: Prefix
+          backend:
+            service:
+              name: fanout-service
+              port:
+                number: 80

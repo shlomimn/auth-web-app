@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fanout-proxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fanout-proxy
+  template:
+    metadata:
+      labels:
+        app: fanout-proxy
+    spec:
+      containers:
+        - name: proxy
+          image: fanout-proxy:1.0
+          ports:
+            - containerPort: 8080
