@@ -38,7 +38,7 @@ AWS ALB
   │       (round robin)
   │
   └── POST /register
-       POST /changePassword
+      POST /changePassword
             │
             ▼
        fanout-proxy pod
