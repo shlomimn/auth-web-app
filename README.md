@@ -30,18 +30,26 @@ AWS ALB
   │       ▼
   │   auth-service
   │       │
-  │   auth pods (round robin)
+  │       ├── auth pod 1  (image supplied)
+  │       ├── auth pod 2  (image supplied)
+  │       ├── auth pod 3  (image supplied)
+  │       ├── ...
+  │       └── auth pod N  (image supplied)
+  │       (round robin)
   │
   └── POST /register
-      POST /changePassword
+       POST /changePassword
             │
             ▼
-       fanout-proxy
+       fanout-proxy pod
+       (image built from this repository)
             │
-            ├── auth pod 1
-            ├── auth pod 2
-            ├── auth pod 3
-            └── auth pod N
+            ├── auth pod 1  (image supplied)
+            ├── auth pod 2  (image supplied)
+            ├── auth pod 3  (image supplied)
+            ├── ...
+            └── auth pod N  (image supplied)
+            (fan-out to all servers)
 ```
 
 ## Explanation
