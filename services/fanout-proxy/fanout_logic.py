@@ -32,6 +32,7 @@ def fanout_request(path, data):
         t.start()
         threads.append(t)
 
+    # Wait until the thread finishes
     for t in threads:
         t.join()
 
