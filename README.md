@@ -71,27 +71,44 @@ The fanout proxy:
 3. Retries failed servers using exponential backoff
 
 ## Project Structure
+
 ```
-auth-web-app
+auth-web-app/
 │
-├── services
-│   └── fanout_proxy
-│       ├── app.py
-│       ├── fanout_logic.py
-│       ├── retry.py
-│       ├── Dockerfile
-│       └── requirements.txt
+├── Assignment/
+│   ├── README-problems.md
+│   └── Treeverse Home Assignment - Infra.pdf
 │
-├── k8s
-│   ├── namespace.yaml
-│   ├── auth-deployment.yaml
-│   ├── auth-service.yaml
-│   ├── fanout-deployment.yaml
-│   ├── fanout-service.yaml
-│   └── ingress.yaml
+├── k8s/
+│   ├── namespace.yaml          # Kubernetes namespace definition
+│   ├── auth-deployment.yaml    # Deployment for auth server pods
+│   ├── auth-service.yaml       # ClusterIP service exposing auth pods
+│   ├── fanout-deployment.yaml  # Deployment for fanout proxy pods
+│   ├── fanout-service.yaml     # Service exposing the fanout proxy
+│   └── ingress.yaml            # Ingress exposing the system externally
 │
-└── README.md
+├── services/
+│   └── fanout-proxy/
+│       ├── app.py              # Flask gateway handling HTTP requests
+│       ├── fanout_logic.py     # Fan-out request logic for POST operations
+│       ├── retry.py            # Exponential backoff retry mechanism
+│       ├── Dockerfile          # Builds the fanout proxy container image
+│       ├── requirements.txt    # Python dependencies
+│       └── README-code.md      # Explanation of the proxy implementation
+│
+└── README.md                   # Main project documentation
 ```
+
+## Key Components
+
+| Component                | Purpose                                                             |
+| ------------------------ | ------------------------------------------------------------------- |
+| **Fanout Proxy**         | Python Flask gateway that implements the smart load balancing logic |
+| **Auth Service**         | Backend service that stores authentication data locally             |
+| **Kubernetes Manifests** | Deploy and expose the services in the cluster                       |
+| **Ingress**              | Exposes the fanout proxy externally                                 |
+| **Dockerfile**           | Packages the proxy into a container image                           |
+
 ## Assumption
 **The auth-server image is supplied externally by the assignment provider.**  
 (The original website image)
