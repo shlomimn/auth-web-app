@@ -84,8 +84,8 @@ auth-web-app
 │
 └── README.md
 ```
-
-The auth-server image is supplied externally by the assignment provider.  
+## Assumption
+**The auth-server image is supplied externally by the assignment provider.**  
 (The original website image)
 
 ## Prerequisites
