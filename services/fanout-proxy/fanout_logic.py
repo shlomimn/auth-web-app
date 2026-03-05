@@ -2,6 +2,8 @@ import threading
 import requests
 from retry import retry_request
 
+# Represents multiple pods behind a service.
+# auth-service pods
 AUTH_SERVERS = [
     "http://auth-service:80"
 ]
