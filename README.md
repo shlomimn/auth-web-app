@@ -41,21 +41,18 @@ AWS ALB
       POST /changePassword
             │
             ▼
-       fanout-proxy service ◄──────── scrape /metrics ───────── Prometheus
-            │                                                       │
-            ▼                                                       │
-       fanout-proxy pod                                             │
-       (image built from this repository)                           │
-            │                                                       │
-            ├── auth pod 1                                          │
-            ├── auth pod 2                                          │
-            ├── auth pod 3                                          │
-            ├── ...                                                 │
-            └── auth pod N  (image supplied)                        │
-            (fan-out to all servers)                                │
-                                                                    │
-                                                                    ▼
-                                                                  Grafana
+       fanout-proxy service ◄──────── scrape /metrics ───────── Prometheus ───────► Grafana
+            │
+            ▼
+       fanout-proxy pod
+       (image built from this repository)
+            │
+            ├── auth pod 1
+            ├── auth pod 2
+            ├── auth pod 3
+            ├── ...
+            └── auth pod N  (image supplied)
+            (fan-out to all servers)
 ```
 
 ## Explanation
