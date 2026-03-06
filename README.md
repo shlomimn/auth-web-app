@@ -78,7 +78,7 @@ The fanout proxy:
 ```
 auth-web-app/
 │
-├── Assignment/
+├── assignment/
 │   ├── README-problems.md
 │   └── Treeverse Home Assignment - Infra.pdf
 │
@@ -92,14 +92,18 @@ auth-web-app/
 │
 ├── services/
 │   └── fanout-proxy/
-│       ├── app.py              # Flask gateway handling HTTP requests
-│       ├── fanout_logic.py     # Fan-out request logic for POST operations
-│       ├── retry.py            # Exponential backoff retry mechanism
-│       ├── Dockerfile          # Builds the fanout proxy container image
-│       ├── requirements.txt    # Python dependencies
-│       └── README-code.md      # Explanation of the proxy implementation
+│       ├── docker/
+│       │   └── Dockerfile          # Builds the fanout proxy container image
+│       │
+│       ├── python/
+│       │   ├── app.py              # Flask gateway handling HTTP requests
+│       │   ├── fanout_logic.py     # Fan-out request logic for POST operations
+│       │   ├── retry.py            # Exponential backoff retry mechanism
+│       │   └── requirements.txt    # Python dependencies
+│       │
+│       └── README-code.md          # Explanation of the proxy implementation
 │
-└── README.md                   # Main project documentation
+└── README.md                       # Main project documentation
 ```
 
 ## Key Components
