@@ -30,9 +30,9 @@ AWS ALB
   │       ▼
   │   auth-service
   │       │
-  │       ├── auth pod 1  (image supplied)
-  │       ├── auth pod 2  (image supplied)
-  │       ├── auth pod 3  (image supplied)
+  │       ├── auth pod 1
+  │       ├── auth pod 2
+  │       ├── auth pod 3
   │       ├── ...
   │       └── auth pod N  (image supplied)
   │       (round robin)
@@ -44,12 +44,21 @@ AWS ALB
        fanout-proxy pod
        (image built from this repository)
             │
-            ├── auth pod 1  (image supplied)
-            ├── auth pod 2  (image supplied)
-            ├── auth pod 3  (image supplied)
+            ├── auth pod 1
+            ├── auth pod 2
+            ├── auth pod 3
             ├── ...
             └── auth pod N  (image supplied)
             (fan-out to all servers)
+            │
+            ▼
+        /metrics endpoint
+            │
+            ▼
+        Prometheus
+            │
+            ▼
+        Grafana (optional dashboards)
 ```
 
 ## Explanation
@@ -110,8 +119,9 @@ auth-web-app/
 | **Dockerfile**           | Packages the proxy into a container image                           |
 
 ## Assumption
-**The auth-server image is supplied externally by the assignment provider.**  
-(The original website image)
+**The "auth pods" run a pre-built image supplied as part of the assignment, while the
+"fanout-proxy" image is built from the code in this repository.**  
+("auth pods" = The original website image)
 
 ## Prerequisites
 * AWS Kubernetes cluster
@@ -183,6 +193,54 @@ by:
 2. returning the first successful response
 
 3. retrying failed servers asynchronously
+
+## Monitoring
+### Metrics:
+How monitoring works:
+```
+Prometheus
+    │
+    ▼
+fanout-proxy:8080/metrics
+```
+
+What metrics look like when calling ```/metrics```:
+```
+post_requests_total{endpoint="register"} 120
+post_requests_total{endpoint="changePassword"} 45
+retry_attempts_total 8
+```
+
+### Prometheus Scraping:
+
+The fanout proxy exposes metrics at: ```/metrics```
+
+Prometheus scrapes the service using the Kubernetes DNS name:
+```
+fanout-proxy.auth-system.svc.cluster.local:8080
+```
+
+Example for Prometheus configuration:
+```
+scrape_configs:
+  - job_name: fanout-proxy
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+        - fanout-proxy.auth-system.svc.cluster.local:8080
+```
+This configuration instructs Prometheus to periodically scrape the fanout proxy
+metrics endpoint in order to collect operational metrics such as request counts
+and retry attempts.
+
+### Grafana Dashboards: 
+Build Grafana dashboards like:
+
+* Register requests/sec
+
+* Password change requests/sec
+
+* Retry spikes (detect auth node failures)
 
 
 ## Summary
